@@ -80,9 +80,14 @@
                 <h1 class="text-5xl md:text-8xl font-black uppercase leading-[0.9] mb-8 tracking-tighter">
                     Ideile tale,<br>imprimate <span class="text-red-600">la scară mare</span>
                 </h1>
-                <p class="text-gray-400 text-xl md:text-2xl font-light max-w-3xl leading-relaxed border-l-2 border-red-600 pl-6">
-                    Cu o experiență de peste 10 ani, KBS ajută afacerile să se facă remarcate și să își crească vânzările prin materiale publicitare de impact.
-                </p>
+                <div class="border-l-2 border-red-600 pl-6 max-w-3xl">
+                    <p class="text-gray-400 text-xl md:text-2xl font-light leading-relaxed mb-8">
+                        Cu o experiență de peste 10 ani, KBS ajută afacerile să se facă remarcate și să își crească vânzările prin materiale publicitare de impact.
+                    </p>
+                    <a href="#oferta" class="inline-block bg-[#d32f2f] text-white px-8 py-4 rounded-lg font-black uppercase tracking-widest text-sm hover:bg-red-700 transition-all shadow-xl">
+                        Solicită Ofertă
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -171,15 +176,15 @@
                             </div>
                         </a>
 
-                        <a href="https://maps.app.goo.gl/uXv7zNq7F3F3F3F37" target="_blank" class="flex items-start gap-5 group">
-                            <div class="bg-red-600 p-3 rounded-lg text-white transition group-hover:bg-[#1a237e]">
+                        <div class="flex items-start gap-5 group">
+                            <div class="bg-red-600 p-3 rounded-lg text-white transition">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                             </div>
                             <div>
-                                <p class="text-xs font-bold uppercase text-gray-400">Sediu (Deschide în Maps)</p>
+                                <p class="text-xs font-bold uppercase text-gray-400">Sediu</p>
                                 <p class="text-xl font-black transition group-hover:text-red-600">Strada Feleacului 1, Arad</p>
                             </div>
-                        </a>
+                        </div>
 
                         <div class="border-l-4 border-red-600 pl-5 py-2 bg-gray-100 rounded-r-lg font-black italic">
                             <p class="text-xs font-bold uppercase text-gray-400 font-normal not-italic">Program de lucru</p>
@@ -345,10 +350,7 @@
                 btn.innerHTML = originalText;
                 
                 if (response.ok) {
-                    // Confetti!
                     confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d32f2f', '#1a237e', '#ffffff'] });
-                    
-                    // Show Modal
                     modal.classList.remove('opacity-0', 'pointer-events-none');
                     modal.classList.add('opacity-100', 'pointer-events-auto');
                     modalContent.classList.remove('scale-90');
