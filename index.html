@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KBS PROMO PRODUCTION | Producție Publicitară </title>
+    <title>KBS PROMO PRODUCTION | Producție Publicitară Arad</title>
+    <meta name="description" content="Producție publicitară premium în Arad: bannere, mesh-uri, colantări auto, tipar digital și personalizări. Peste 10 ani de experiență.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -13,20 +14,54 @@
             --kbs-navy: #1a237e;
             --kbs-gray: #9ca3af;
         }
+
+        /* --- STILURI PENTRU RECENZII --- */
+        @keyframes scrollReviews {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-350px * 10)); }
+        }
+        .testimonial-slider-container { overflow: hidden; width: 100%; position: relative; }
+        .testimonial-slider-track {
+            display: flex;
+            width: max-content;
+            animation: scrollReviews 40s linear infinite;
+        }
+        .testimonial-slider-track:hover { animation-play-state: paused; }
+        .testimonial-card-kbs {
+            width: 330px;
+            flex-shrink: 0;
+            margin: 0 10px;
+        }
+
+        /* Animatie pentru filtrare produse */
+        .product-card { transition: all 0.3s ease; }
+
+        /* Stil pentru dropdown-ul de cautare in formular */
+        #formProductDropdown { 
+            display: none; 
+            max-height: 250px; 
+            overflow-y: auto; 
+            z-index: 50; 
+            position: absolute; 
+            width: 100%; 
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        #formProductDropdown div:hover { background-color: #f3f4f6; cursor: pointer; color: #d32f2f; }
     </style>
 </head>
-<body class="bg-white text-gray-900">
+<body id="top" class="bg-white text-gray-900">
 
     <nav class="bg-white py-5 sticky top-0 z-50 shadow-sm">
         <div class="container mx-auto px-6 flex justify-between items-center">
             <div class="flex items-center">
-                <div class="leading-none">
+                <a href="#top" class="leading-none">
                     <span class="text-[#d32f2f] text-4xl font-black tracking-tight">K</span><span class="text-[#1a237e] text-4xl font-black tracking-tight">BS</span><br>
                     <span class="text-[#9ca3af] text-[11px] uppercase tracking-[0.2em] font-bold">PROMO PRODUCTION</span>
-                </div>
+                </a>
             </div>
             <div class="hidden md:flex space-x-8 items-center font-semibold text-gray-600 uppercase text-xs tracking-widest">
-                <a href="#" class="hover:text-red-600 transition">Acasă</a>
+                <a href="#top" class="hover:text-red-600 transition">Acasă</a>
                 <a href="#categorii" class="hover:text-red-600 transition">Produse</a>
                 <a href="#contact" class="hover:text-red-600 transition">Contact</a>
                 <a href="#oferta" class="bg-[#d32f2f] text-white px-7 py-2.5 rounded font-bold shadow-lg hover:bg-red-700 transition">Cere Ofertă</a>
@@ -53,25 +88,33 @@
         </div>
     </header>
 
-    <section id="categorii" class="py-20 bg-white">
-        <div class="container mx-auto px-6 grid md:grid-cols-3 gap-10 text-center font-black uppercase tracking-widest text-sm">
-            <div class="group">
-                <div class="rounded-xl overflow-hidden mb-4 h-64 shadow-lg border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1583258292688-d5ec68272f71?q=80&w=1974&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+    <section id="categorii" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black uppercase tracking-tighter text-[#1a2533] mb-4">Gama Noastră de Produse</h2>
+                <div class="h-1.5 w-24 bg-red-600 mx-auto mb-10"></div>
+                
+                <div class="max-w-md mx-auto relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400 group-focus-within:text-red-600 transition-colors" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                    </div>
+                    <input type="text" id="productSearch" placeholder="Caută (ex: carti vizita, mesh, afise...)" 
+                        class="w-full p-4 pl-12 bg-gray-50 border-2 border-gray-100 rounded-2xl outline-none focus:border-red-600 focus:bg-white focus:ring-4 focus:ring-red-600/5 transition-all shadow-sm font-medium text-gray-700">
                 </div>
-                <h3>Roll-up & Sisteme</h3>
             </div>
-            <div class="group">
-                <div class="rounded-xl overflow-hidden mb-4 h-64 shadow-lg border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1562654501-a0ccc0af3fb1?q=80&w=1932&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="grid-produse">
                 </div>
-                <h3>Bannere & Mesh</h3>
+            
+            <div id="noResults" class="hidden text-center py-10">
+                <p class="text-gray-400 font-medium">Nu am găsit produsul căutat. Încearcă o altă denumire.</p>
             </div>
-            <div class="group">
-                <div class="rounded-xl overflow-hidden mb-4 h-64 shadow-lg border border-gray-100">
-                    <img src="https://images.unsplash.com/photo-1589384273441-c5da29d30ee4?q=80&w=2070&auto=format&fit=crop" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-                </div>
-                <h3>Etichete & Stickere</h3>
+
+            <div class="mt-16 p-8 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200 text-center">
+                <p class="text-gray-500 font-medium italic">Nu găsești ce cauți în listă? Putem produce aproape orice material publicitar la comandă.</p>
+                <a href="#oferta" class="inline-block mt-4 text-red-600 font-black uppercase tracking-widest text-sm hover:underline transition-all">Întreabă-ne acum →</a>
             </div>
         </div>
     </section>
@@ -92,21 +135,14 @@
                             <input type="email" name="email" placeholder="Email" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
                         </div>
                         
-                        <select name="produs" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
-                            <option value="" disabled selected>Selectează un produs...</option>
-                            <option value="Banner">Banner</option>
-                            <option value="Mesh">Mesh</option>
-                            <option value="Colantări diverse">Colantări diverse</option>
-                            <option value="Mape prezentare">Mape prezentare</option>
-                            <option value="Etichete">Etichete</option>
-                            <option value="Afișe / Postere">Afișe / Postere</option>
-                            <option value="Meniuri">Meniuri</option>
-                            <option value="Print pe tricouri">Print pe tricouri</option>
-                            <option value="Cărți de vizită">Cărți de vizită</option>
-                            <option value="Altele">Altele...</option>
-                        </select>
+                        <div class="relative">
+                            <input type="text" id="formProductSearch" name="produs_selectat" placeholder="Scrie produsul dorit (ex: Banner)..." autocomplete="off" required 
+                                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600 transition-all">
+                            <div id="formProductDropdown" class="border border-gray-200 rounded-lg mt-1 shadow-xl">
+                                </div>
+                        </div>
 
-                        <textarea name="mesaj" rows="4" placeholder="Detalii proiect..." required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600"></textarea>
+                        <textarea name="mesaj" rows="4" placeholder="Detalii proiect (cantitate, dimensiuni)..." required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600"></textarea>
                         <button type="submit" class="w-full bg-[#1a2533] text-white font-black py-4 rounded-lg hover:bg-red-700 transition-all uppercase tracking-widest shadow-xl">Trimite Cererea</button>
                     </form>
                 </div>
@@ -132,11 +168,11 @@
                             </div>
                             <div>
                                 <p class="text-xs font-bold uppercase text-gray-400">Email (Trimite mesaj)</p>
-                                <p class="text-xl font-black leading-none transition group-hover:text-red-600">kbs.production@yahoo.com</p>
+                                <p class="text-xl font-black transition group-hover:text-red-600">kbs.production@yahoo.com</p>
                             </div>
                         </a>
 
-                        <a href="https://www.google.com/maps/search/?api=1&query=Strada+Feleacului+1,+Arad" target="_blank" class="flex items-start gap-5 group">
+                        <a href="https://maps.google.com/?q=Strada+Feleacului+1,Arad" target="_blank" class="flex items-start gap-5 group">
                             <div class="bg-red-600 p-3 rounded-lg text-white transition group-hover:bg-[#1a237e]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                             </div>
@@ -162,13 +198,184 @@
         </div>
     </section>
 
+    <section class="py-20 bg-white overflow-hidden border-t border-gray-100">
+        <div class="container mx-auto px-6 text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-[#1a2533]">
+                Alătură-te celor peste <span class="text-red-600">4,975</span> clienți mulțumiți
+            </h2>
+            <p class="text-gray-500 mt-2 font-medium italic">Profesionalism · Rapiditate · Calitate Premium</p>
+        </div>
+        
+        <div class="testimonial-slider-container">
+            <div class="testimonial-slider-track" id="slider-track-kbs"></div>
+        </div>
+    </section>
+
+    <section id="statistics-section" class="py-20 bg-[#1a2533] border-t border-gray-800">
+        <div class="container mx-auto px-6 max-w-6xl">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div class="grid grid-cols-2 gap-y-12 gap-x-8">
+                    <div class="border-l-2 border-red-600 pl-6">
+                        <p class="text-4xl md:text-5xl font-black text-white leading-none mb-2">+<span class="counter-value" data-target="4975">0</span></p>
+                        <p class="text-xs uppercase tracking-widest text-gray-400 font-bold">Clienți KBS Promo</p>
+                    </div>
+                    <div class="border-l-2 border-red-600 pl-6">
+                        <p class="text-4xl md:text-5xl font-black text-white leading-none mb-2">+<span class="counter-value" data-target="39766">0</span></p>
+                        <p class="text-xs uppercase tracking-widest text-gray-400 font-bold">Lucrări Efectuate</p>
+                    </div>
+                    <div class="border-l-2 border-red-600 pl-6">
+                        <p class="text-4xl md:text-5xl font-black text-white leading-none mb-2">+<span class="counter-value" data-target="10">0</span></p>
+                        <p class="text-xs uppercase tracking-widest text-gray-400 font-bold">Ani de Activitate</p>
+                    </div>
+                    <div class="border-l-2 border-red-600 pl-6">
+                        <p class="text-4xl md:text-5xl font-black text-white leading-none mb-2"><span class="counter-value" data-target="100">0</span>%</p>
+                        <p class="text-xs uppercase tracking-widest text-gray-400 font-bold">Calitate Garantată</p>
+                    </div>
+                </div>
+                <div class="text-white">
+                    <h2 class="text-3xl md:text-5xl font-black uppercase mb-6 tracking-tighter leading-tight">
+                        De ce să alegi <span class="text-red-600">KBS Promo Production</span>?
+                    </h2>
+                    <p class="text-gray-400 text-lg font-light leading-relaxed">
+                        Suntem partenerul tău strategic în producția publicitară din Arad. Combinăm tehnologia de ultimă generație cu o experiență de peste un deceniu.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <footer class="bg-[#1a2533] text-white py-12 text-center text-[10px] text-gray-500 uppercase tracking-widest font-bold">
-        KBS PROMO PRODUCTION © 2016. Toate drepturile rezervate.
+        KBS PROMO PRODUCTION © 2016 - 2026. Toate drepturile rezervate.
     </footer>
 
     <a href="https://wa.me/40734328118" class="fixed bottom-8 right-8 bg-[#25D366] p-4 rounded-full shadow-2xl hover:scale-110 transition z-50">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="white" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.161 1.237 8.404 3.48s3.481 5.229 3.481 8.406c0 6.555-5.332 11.887-11.888 11.887-2.007 0-3.974-.506-5.717-1.47l-6.267 1.694zm5.171-4.103c.149.089 1.548.918 1.957 1.107 1.11.512 2.304.78 3.535.78 4.603 0 8.348-3.745 8.348-8.347 0-2.228-.867-4.323-2.441-5.897s-3.669-2.441-5.897-2.441c-4.603 0-8.348 3.746-8.348 8.347 0 1.542.418 3.033 1.212 4.332l.146.241-.937 3.422 3.43-.927z"/></svg>
     </a>
 
+    <script>
+        /* --- LOGICA PRODUSE SI SEARCH INTELIGENT (FARA DIACRITICE) --- */
+        const produseKBS = [
+            "Banner", "Mesh", "Cărți de vizită", "Flyere", "Pliante", 
+            "Broșuri", "Invitații", "Mape de prezentare", "Bilete", 
+            "Vouchere", "Afișe", "Formulare autocopiative", "Liste preț", 
+            "Meniuri bar/restaurant", "Personalizări auto/vehicule", 
+            "Personalizări vitrine și fațade", "Print pe tricouri", 
+            "Rame click", "Roll up", "Pop up", "Autocolante print solvent", 
+            "Etichete adezive", "Folii imitație geam sablat", "Folii magnetice", 
+            "Folii window graphics", "Tapet", "Canvas", "Calendare de birou", 
+            "Calendare de perete", "Agende personalizate"
+        ];
+
+        const grid = document.getElementById('grid-produse');
+        const searchInput = document.getElementById('productSearch');
+        const noResults = document.getElementById('noResults');
+        const formInput = document.getElementById('formProductSearch');
+        const formDropdown = document.getElementById('formProductDropdown');
+
+        // Functie pentru normalizarea textului (elimina diacriticele)
+        function normalizeText(text) {
+            return text.toLowerCase()
+                       .normalize("NFD")
+                       .replace(/[\u0300-\u036f]/g, "") 
+                       .replace(/ț/g, "t").replace(/ș/g, "s");
+        }
+
+        /* --- FILTRARE CATALOG SI REDIRECTIONARE FORMULAR --- */
+        function renderCatalog(filter = "") {
+            grid.innerHTML = "";
+            const normalizedFilter = normalizeText(filter);
+            const filtered = produseKBS.filter(p => normalizeText(p).includes(normalizedFilter));
+            
+            if (filtered.length === 0) {
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                filtered.forEach(produs => {
+                    const card = document.createElement('div');
+                    // Am adaugat cursor-pointer pentru a indica faptul ca este clicabil
+                    card.className = "product-card group relative p-6 bg-gray-50 border border-gray-100 rounded-xl hover:bg-[#1a237e] hover:shadow-xl transition-all duration-300 flex items-center justify-center text-center min-h-[110px] cursor-pointer";
+                    card.innerHTML = `<div class="relative z-10"><h3 class="text-[10px] md:text-xs font-black uppercase tracking-widest text-[#1a2533] group-hover:text-white transition-colors">${produs}</h3></div><div class="absolute bottom-0 right-0 w-6 h-6 bg-red-600/10 group-hover:bg-red-600 rounded-tl-full transition-all duration-300"></div>`;
+                    
+                    // EVENIMENT: La click pe card, scroll la oferta si selectare automata produs
+                    card.onclick = () => {
+                        document.getElementById('oferta').scrollIntoView({ behavior: 'smooth' });
+                        formInput.value = produs;
+                        // Mic delay pentru a permite scroll-ului sa ajunga la destinatie inainte de focus
+                        setTimeout(() => {
+                            document.getElementsByName('nume_prenume')[0].focus();
+                        }, 800);
+                    };
+
+                    grid.appendChild(card);
+                });
+            }
+        }
+        searchInput.addEventListener('input', (e) => renderCatalog(e.target.value));
+        renderCatalog();
+
+        /* --- SEARCH IN FORMULAR (DROP-DOWN INTELIGENT) --- */
+        function renderFormDropdown(filter = "") {
+            formDropdown.innerHTML = "";
+            const nf = normalizeText(filter);
+            const filtered = produseKBS.filter(p => normalizeText(p).includes(nf));
+            
+            if (filtered.length > 0 && filter !== "") {
+                formDropdown.style.display = "block";
+                filtered.forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = "px-4 py-3 text-sm font-bold text-gray-700 uppercase transition";
+                    div.innerText = p;
+                    div.onclick = () => {
+                        formInput.value = p;
+                        formDropdown.style.display = "none";
+                    };
+                    formDropdown.appendChild(div);
+                });
+            } else {
+                formDropdown.style.display = "none";
+            }
+        }
+
+        formInput.addEventListener('input', (e) => renderFormDropdown(e.target.value));
+        document.addEventListener('click', (e) => { if (e.target !== formInput) formDropdown.style.display = "none"; });
+
+        /* --- RECENZII --- */
+        const kbsData = [
+            { n: "Andrei M.", t: "S-au mișcat incredibil de repede! Recomand cu toată încrederea." },
+            { n: "Ioana S.", t: "Cea mai tare echipă din Arad! Profesioniști adevărați și prompți." },
+            { n: "Marius T.", t: "Colaborez de mult cu ei și nu m-au dezamăgit niciodată." },
+            { n: "Elena P.", t: "Materiale publicitare de o calitate superioară." },
+            { n: "Cosmin B.", t: "Promptitudine și seriozitate. Au livrat în timp record." }
+        ];
+        const track = document.getElementById('slider-track-kbs');
+        for(let i = 0; i < 4; i++) {
+            kbsData.forEach(rev => {
+                const card = document.createElement('div');
+                card.className = "testimonial-card-kbs bg-white p-6 rounded-2xl shadow-md border border-gray-100";
+                card.innerHTML = `<div class="text-red-600 mb-2 font-bold text-lg">★★★★★</div><p class="text-gray-700 italic mb-4 font-medium leading-relaxed">"${rev.t}"</p><p class="font-black text-[#1a2533] uppercase text-xs tracking-widest border-t border-gray-100 pt-4">— ${rev.n}</p>`;
+                track.appendChild(card);
+            });
+        }
+
+        /* --- COUNTERS --- */
+        const animateCounters = () => {
+            document.querySelectorAll('.counter-value').forEach(counter => {
+                const target = +counter.getAttribute('data-target');
+                const updateCount = () => {
+                    const count = +counter.innerText.replace(/,/g, '');
+                    const inc = target / 50;
+                    if (count < target) {
+                        counter.innerText = Math.ceil(count + inc).toLocaleString('en-US');
+                        setTimeout(updateCount, 25);
+                    } else { counter.innerText = target.toLocaleString('en-US'); }
+                };
+                updateCount();
+            });
+        };
+        const obs = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) { animateCounters(); obs.disconnect(); }
+        }, { threshold: 0.5 });
+        obs.observe(document.getElementById('statistics-section'));
+    </script>
 </body>
 </html>
