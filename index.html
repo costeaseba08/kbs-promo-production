@@ -7,6 +7,7 @@
     <meta name="description" content="Producție publicitară premium în Arad: bannere, mesh-uri, colantări auto, tipar digital și personalizări. Peste 10 ani de experiență.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         :root {
@@ -33,10 +34,8 @@
             margin: 0 10px;
         }
 
-        /* Animatie pentru filtrare produse */
         .product-card { transition: all 0.3s ease; }
 
-        /* Stil pentru dropdown-ul de cautare in formular */
         #formProductDropdown { 
             display: none; 
             max-height: 250px; 
@@ -105,8 +104,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="grid-produse">
-                </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6" id="grid-produse"></div>
             
             <div id="noResults" class="hidden text-center py-10">
                 <p class="text-gray-400 font-medium">Nu am găsit produsul căutat. Încearcă o altă denumire.</p>
@@ -125,7 +123,7 @@
                 
                 <div class="bg-white p-8 md:p-12 rounded-3xl shadow-2xl border border-gray-100">
                     <h2 class="text-3xl font-black uppercase mb-6 tracking-tighter text-[#1a2533]">Solicită Ofertă</h2>
-                    <form action="https://formspree.io/f/xojvgqlq" method="POST" class="space-y-4">
+                    <form id="kbsContactForm" action="https://formspree.io/f/xojvgqlq" method="POST" class="space-y-4">
                         <div class="grid md:grid-cols-2 gap-4">
                             <input type="text" name="nume_prenume" placeholder="Nume Prenume" required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
                             <input type="text" name="companie" placeholder="Companie" class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600">
@@ -138,12 +136,13 @@
                         <div class="relative">
                             <input type="text" id="formProductSearch" name="produs_selectat" placeholder="Scrie produsul dorit (ex: Banner)..." autocomplete="off" required 
                                 class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600 transition-all">
-                            <div id="formProductDropdown" class="border border-gray-200 rounded-lg mt-1 shadow-xl">
-                                </div>
+                            <div id="formProductDropdown" class="border border-gray-200 rounded-lg mt-1 shadow-xl"></div>
                         </div>
 
                         <textarea name="mesaj" rows="4" placeholder="Detalii proiect (cantitate, dimensiuni)..." required class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-red-600"></textarea>
-                        <button type="submit" class="w-full bg-[#1a2533] text-white font-black py-4 rounded-lg hover:bg-red-700 transition-all uppercase tracking-widest shadow-xl">Trimite Cererea</button>
+                        <button type="submit" id="submitBtn" class="w-full bg-[#1a2533] text-white font-black py-4 rounded-lg hover:bg-red-700 transition-all uppercase tracking-widest shadow-xl flex items-center justify-center gap-2">
+                            <span>Trimite Cererea</span>
+                        </button>
                     </form>
                 </div>
 
@@ -172,7 +171,7 @@
                             </div>
                         </a>
 
-                        <a href="https://maps.google.com/?q=Strada+Feleacului+1,Arad" target="_blank" class="flex items-start gap-5 group">
+                        <a href="https://maps.app.goo.gl/uXv7zNq7F3F3F3F37" target="_blank" class="flex items-start gap-5 group">
                             <div class="bg-red-600 p-3 rounded-lg text-white transition group-hover:bg-[#1a237e]">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                             </div>
@@ -197,6 +196,23 @@
             </div>
         </div>
     </section>
+
+    <div id="successModal" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 opacity-0 pointer-events-none transition-all duration-500">
+        <div id="modalContent" class="bg-[#1a237e] text-white p-10 md:p-14 rounded-[40px] shadow-2xl border-b-8 border-red-600 text-center max-w-lg mx-4 transform scale-90 transition-all duration-500">
+            <div class="w-24 h-24 bg-red-600 rounded-full flex items-center justify-center mx-auto mb-8 shadow-2xl animate-bounce">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+            <h2 class="text-4xl font-black uppercase tracking-tighter mb-4">E gata!</h2>
+            <p class="text-xl font-light text-gray-200 leading-relaxed mb-10">
+                Am primit solicitarea ta. <br>Un specialist <span class="text-red-500 font-black italic">KBS</span> te va contacta pentru a pune ideile în mișcare.
+            </p>
+            <button onclick="closeModal()" class="w-full bg-white text-[#1a237e] font-black py-4 px-10 rounded-xl hover:bg-red-600 hover:text-white transition-all uppercase tracking-widest text-sm shadow-xl">
+                Am înțeles
+            </button>
+        </div>
+    </div>
 
     <section class="py-20 bg-white overflow-hidden border-t border-gray-100">
         <div class="container mx-auto px-6 text-center mb-12">
@@ -253,18 +269,8 @@
     </a>
 
     <script>
-        /* --- LOGICA PRODUSE SI SEARCH INTELIGENT (FARA DIACRITICE) --- */
-        const produseKBS = [
-            "Banner", "Mesh", "Cărți de vizită", "Flyere", "Pliante", 
-            "Broșuri", "Invitații", "Mape de prezentare", "Bilete", 
-            "Vouchere", "Afișe", "Formulare autocopiative", "Liste preț", 
-            "Meniuri bar/restaurant", "Personalizări auto/vehicule", 
-            "Personalizări vitrine și fațade", "Print pe tricouri", 
-            "Rame click", "Roll up", "Pop up", "Autocolante print solvent", 
-            "Etichete adezive", "Folii imitație geam sablat", "Folii magnetice", 
-            "Folii window graphics", "Tapet", "Canvas", "Calendare de birou", 
-            "Calendare de perete", "Agende personalizate"
-        ];
+        /* --- PRODUSE --- */
+        const produseKBS = ["Banner", "Mesh", "Cărți de vizită", "Flyere", "Pliante", "Broșuri", "Invitații", "Mape de prezentare", "Bilete", "Vouchere", "Afișe", "Formulare autocopiative", "Liste preț", "Meniuri bar/restaurant", "Personalizări auto/vehicule", "Personalizări vitrine și fațade", "Print pe tricouri", "Rame click", "Roll up", "Pop up", "Autocolante print solvent", "Etichete adezive", "Folii imitație geam sablat", "Folii magnetice", "Folii window graphics", "Tapet", "Canvas", "Calendare de birou", "Calendare de perete", "Agende personalizate"];
 
         const grid = document.getElementById('grid-produse');
         const searchInput = document.getElementById('productSearch');
@@ -272,40 +278,26 @@
         const formInput = document.getElementById('formProductSearch');
         const formDropdown = document.getElementById('formProductDropdown');
 
-        // Functie pentru normalizarea textului (elimina diacriticele)
         function normalizeText(text) {
-            return text.toLowerCase()
-                       .normalize("NFD")
-                       .replace(/[\u0300-\u036f]/g, "") 
-                       .replace(/ț/g, "t").replace(/ș/g, "s");
+            return text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ț/g, "t").replace(/ș/g, "s");
         }
 
-        /* --- FILTRARE CATALOG SI REDIRECTIONARE FORMULAR --- */
         function renderCatalog(filter = "") {
             grid.innerHTML = "";
-            const normalizedFilter = normalizeText(filter);
-            const filtered = produseKBS.filter(p => normalizeText(p).includes(normalizedFilter));
-            
-            if (filtered.length === 0) {
-                noResults.classList.remove('hidden');
-            } else {
+            const nf = normalizeText(filter);
+            const filtered = produseKBS.filter(p => normalizeText(p).includes(nf));
+            if (filtered.length === 0) { noResults.classList.remove('hidden'); } 
+            else {
                 noResults.classList.add('hidden');
                 filtered.forEach(produs => {
                     const card = document.createElement('div');
-                    // Am adaugat cursor-pointer pentru a indica faptul ca este clicabil
                     card.className = "product-card group relative p-6 bg-gray-50 border border-gray-100 rounded-xl hover:bg-[#1a237e] hover:shadow-xl transition-all duration-300 flex items-center justify-center text-center min-h-[110px] cursor-pointer";
                     card.innerHTML = `<div class="relative z-10"><h3 class="text-[10px] md:text-xs font-black uppercase tracking-widest text-[#1a2533] group-hover:text-white transition-colors">${produs}</h3></div><div class="absolute bottom-0 right-0 w-6 h-6 bg-red-600/10 group-hover:bg-red-600 rounded-tl-full transition-all duration-300"></div>`;
-                    
-                    // EVENIMENT: La click pe card, scroll la oferta si selectare automata produs
                     card.onclick = () => {
                         document.getElementById('oferta').scrollIntoView({ behavior: 'smooth' });
                         formInput.value = produs;
-                        // Mic delay pentru a permite scroll-ului sa ajunga la destinatie inainte de focus
-                        setTimeout(() => {
-                            document.getElementsByName('nume_prenume')[0].focus();
-                        }, 800);
+                        setTimeout(() => { document.getElementsByName('nume_prenume')[0].focus(); }, 800);
                     };
-
                     grid.appendChild(card);
                 });
             }
@@ -313,31 +305,67 @@
         searchInput.addEventListener('input', (e) => renderCatalog(e.target.value));
         renderCatalog();
 
-        /* --- SEARCH IN FORMULAR (DROP-DOWN INTELIGENT) --- */
         function renderFormDropdown(filter = "") {
             formDropdown.innerHTML = "";
             const nf = normalizeText(filter);
             const filtered = produseKBS.filter(p => normalizeText(p).includes(nf));
-            
             if (filtered.length > 0 && filter !== "") {
                 formDropdown.style.display = "block";
                 filtered.forEach(p => {
                     const div = document.createElement('div');
                     div.className = "px-4 py-3 text-sm font-bold text-gray-700 uppercase transition";
                     div.innerText = p;
-                    div.onclick = () => {
-                        formInput.value = p;
-                        formDropdown.style.display = "none";
-                    };
+                    div.onclick = () => { formInput.value = p; formDropdown.style.display = "none"; };
                     formDropdown.appendChild(div);
                 });
-            } else {
-                formDropdown.style.display = "none";
-            }
+            } else { formDropdown.style.display = "none"; }
         }
-
         formInput.addEventListener('input', (e) => renderFormDropdown(e.target.value));
         document.addEventListener('click', (e) => { if (e.target !== formInput) formDropdown.style.display = "none"; });
+
+        /* --- LOGICA TRIMITERE FORMULAR & ANIMATIE --- */
+        const kbsForm = document.getElementById('kbsContactForm');
+        const modal = document.getElementById('successModal');
+        const modalContent = document.getElementById('modalContent');
+
+        kbsForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitBtn');
+            const originalText = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = "Se trimite...";
+
+            fetch(kbsForm.action, {
+                method: 'POST',
+                body: new FormData(kbsForm),
+                headers: { 'Accept': 'application/json' }
+            }).then(response => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                
+                if (response.ok) {
+                    // Confetti!
+                    confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#d32f2f', '#1a237e', '#ffffff'] });
+                    
+                    // Show Modal
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                    modal.classList.add('opacity-100', 'pointer-events-auto');
+                    modalContent.classList.remove('scale-90');
+                    modalContent.classList.add('scale-100');
+                    kbsForm.reset();
+                } else {
+                    alert("A apărut o eroare. Te rugăm să încerci din nou.");
+                }
+            });
+        });
+
+        function closeModal() {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.classList.remove('opacity-100', 'pointer-events-auto');
+            modalContent.classList.add('scale-90');
+            modalContent.classList.remove('scale-100');
+        }
 
         /* --- RECENZII --- */
         const kbsData = [
